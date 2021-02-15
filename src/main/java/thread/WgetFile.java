@@ -32,16 +32,14 @@ public class WgetFile implements Runnable {
                 return;
             }
             fileOutputStream.write(dataBuffer, 0, bytesRead);
-        } catch (IOException | InterruptedException e ) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     *
-     * @param args
-     * "https://raw.githubusercontent.com/peterarsentev/course_test/master/pom.xml"
-     * 10 sec
+     * @param args "https://raw.githubusercontent.com/peterarsentev/course_test/master/pom.xml"
+     *             10 sec
      * @throws InterruptedException
      */
     public static void main(String[] args) throws InterruptedException {
