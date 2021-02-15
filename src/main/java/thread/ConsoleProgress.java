@@ -14,7 +14,7 @@ public class ConsoleProgress implements Runnable {
                     count = 0;
                 }
             } catch (InterruptedException e) {
-                break;
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -24,6 +24,7 @@ public class ConsoleProgress implements Runnable {
         progress.start();
         Thread.sleep(1000); /* симулируем выполнение параллельной задачи в течение 1 секунды. */
         progress.interrupt();
+        progress.join();
         System.out.println(progress.getState());
     }
 }
