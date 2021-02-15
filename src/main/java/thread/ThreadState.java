@@ -19,7 +19,7 @@ public class ThreadState {
             System.out.println(second.getState() + " second");
         }
         System.out.println(first.getState() + " FIRST");
-        System.out.println(second.getState()+ " SECOND");
+        System.out.println(second.getState() + " SECOND");
         System.out.println("main end");
     }
 }

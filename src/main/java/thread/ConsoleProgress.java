@@ -2,6 +2,7 @@ package thread;
 
 public class ConsoleProgress implements Runnable {
     String[] process = {"-", "\\", "|", "/"};
+
     @Override
     public void run() {
         int count = 0;
@@ -23,6 +24,6 @@ public class ConsoleProgress implements Runnable {
         progress.start();
         Thread.sleep(1000); /* симулируем выполнение параллельной задачи в течение 1 секунды. */
         progress.interrupt();
-        System.out.println( progress.getState());
+        System.out.println(progress.getState());
     }
 }
