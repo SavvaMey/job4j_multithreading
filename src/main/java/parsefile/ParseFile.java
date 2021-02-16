@@ -1,6 +1,7 @@
 package parsefile;
 
 import java.io.*;
+import java.util.function.Predicate;
 
 public class ParseFile {
     private File file;
@@ -13,26 +14,26 @@ public class ParseFile {
         return file;
     }
 
-    public String getContent() throws IOException {
-        BufferedInputStream i = new BufferedInputStream(new FileInputStream(file));
+    public String getContent(Predicate<Integer> pred) {
         StringBuilder output = new StringBuilder();
-        int data;
-        while ((data = i.read()) > 0) {
-            output.append((char) data);
+        try (BufferedInputStream i = new BufferedInputStream(new FileInputStream(file))) {
+            int data;
+            while ((data = i.read()) > 0) {
+                if (pred.test(data)) {
+                    output.append((char) data);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return output.toString();
     }
+    public Predicate<Integer>  getContent()  {
+        return data -> true;
+    }
 
-    public synchronized String getContentWithoutUnicode() throws IOException {
-        BufferedInputStream reader = new BufferedInputStream(new FileInputStream(file));
-        StringBuilder output = new StringBuilder();
-        int data;
-        while ((data = reader.read()) > 0) {
-            if (data < 0x80) {
-                output.append((char) data);
-            }
-        }
-        return output.toString();
+    public Predicate<Integer>  getContentWithoutUnicode()  {
+        return data -> data < 0x80;
     }
 
     public synchronized void saveContent(String content) {
