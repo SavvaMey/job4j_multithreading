@@ -31,7 +31,7 @@ public class UserStorage {
         }
         User userOne = storage.get(fromId);
         User userTwo = storage.get(toId);
-        if (userOne.getAmount() >= amount) {
+        if (userOne.getAmount() <= amount) {
             System.out.println("недостаточно средств");
             return;
         }
