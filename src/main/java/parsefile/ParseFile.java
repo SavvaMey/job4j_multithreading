@@ -14,7 +14,7 @@ public class ParseFile {
         return file;
     }
 
-    public String getContent(Predicate<Integer> pred) {
+    public synchronized String getContent(Predicate<Integer> pred) {
         StringBuilder output = new StringBuilder();
         try (BufferedInputStream i = new BufferedInputStream(new FileInputStream(file))) {
             int data;
@@ -28,11 +28,12 @@ public class ParseFile {
         }
         return output.toString();
     }
-    public Predicate<Integer>  getContent()  {
+
+    public Predicate<Integer> getContentAll() {
         return data -> true;
     }
 
-    public Predicate<Integer>  getContentWithoutUnicode()  {
+    public Predicate<Integer> getContentWithoutUnicode() {
         return data -> data < 0x80;
     }
 
