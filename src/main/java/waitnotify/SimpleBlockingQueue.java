@@ -10,45 +10,53 @@ import java.util.Queue;
 public class SimpleBlockingQueue<T> {
     @GuardedBy("lock")
     private Queue<T> queue = new LinkedList<>();
-    private final int LIMIT = 10;
+    private final int LIMIT;
     private final Object lock = new Object();
 
-    public void offer(T value) throws InterruptedException {
+    public SimpleBlockingQueue(int LIMIT) {
+        this.LIMIT = LIMIT;
+    }
+
+    public void offer(T value)  {
         synchronized (lock) {
             while (queue.size() == LIMIT) {
-                lock.wait();
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             queue.offer(value);
             lock.notifyAll();
         }
     }
 
-    public T poll() throws InterruptedException {
+    public T poll()  {
         synchronized (lock) {
             while (queue.size() == 0) {
-                lock.wait();
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             T value = queue.poll();
             System.out.println(queue.size() + " -razmer; "
                     + value + " -вытащали значение");
             lock.notifyAll();
-            Thread.sleep(300);
+//            Thread.sleep(300);
             return value;
         }
     }
 
     public static void main(String[] args) throws InterruptedException {
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>();
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(10);
         Thread threadProduceOne = new Thread(
                 () -> {
                     int count = 0;
                     do {
                         count++;
-                        try {
-                            queue.offer(1);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        queue.offer(1);
                     } while (count <= 50);
                     System.out.println("завершил работу " + Thread.currentThread().getName());
                 }, "продюсер один"
@@ -57,12 +65,8 @@ public class SimpleBlockingQueue<T> {
         Thread threadConsumerOne = new Thread(
                 () -> {
                     for (int i = 0; i <= 25; i++) {
-                        try {
-                            queue.poll();
-                            System.out.println("консьюмер 1 вытащил");
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        queue.poll();
+                        System.out.println("консьюмер 1 вытащил");
                     }
                     System.out.println("завершил работу " + Thread.currentThread().getName());
                 }, "консюмер один"
@@ -71,12 +75,8 @@ public class SimpleBlockingQueue<T> {
         Thread threadConsumerTwo = new Thread(
                 () -> {
                     for (int i = 26; i <= 50; i++) {
-                        try {
-                            queue.poll();
-                            System.out.println("консьюмер 2 вытащил");
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        queue.poll();
+                        System.out.println("консьюмер 2 вытащил");
                     }
                     System.out.println("завершил работу " + Thread.currentThread().getName());
                 }, "консюмер два"
