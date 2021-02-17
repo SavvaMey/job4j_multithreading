@@ -12,7 +12,6 @@ public class ParallelSearch {
                         } catch (InterruptedException e) {
                             System.out.println("завершаю работу");
                             Thread.currentThread().interrupt();
-
                         }
                     }
                 }
