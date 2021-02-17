@@ -44,7 +44,6 @@ public class SimpleBlockingQueue<T> {
             System.out.println(queue.size() + " -razmer; "
                     + value + " -вытащали значение");
             lock.notifyAll();
-//            Thread.sleep(300);
             return value;
         }
     }
