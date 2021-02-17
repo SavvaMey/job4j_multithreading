@@ -49,6 +49,12 @@ public class SimpleBlockingQueue<T> {
         }
     }
 
+    public boolean isEmpty() {
+        synchronized (lock) {
+            return queue.isEmpty();
+        }
+    }
+
     public static void main(String[] args) throws InterruptedException {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(10);
         Thread threadProduceOne = new Thread(
