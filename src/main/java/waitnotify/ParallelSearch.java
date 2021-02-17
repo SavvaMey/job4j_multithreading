@@ -2,7 +2,7 @@ package waitnotify;
 
 public class ParallelSearch {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(10);
         final Thread consumer = new Thread(
                 () -> {
@@ -11,7 +11,8 @@ public class ParallelSearch {
                             System.out.println(queue.poll());
                         } catch (InterruptedException e) {
                             System.out.println("завершаю работу");
-                            break;
+                            Thread.currentThread().interrupt();
+
                         }
                     }
                 }
@@ -31,8 +32,5 @@ public class ParallelSearch {
                 }
 
         ).start();
-
-
     }
-
 }
