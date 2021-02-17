@@ -10,16 +10,16 @@ import java.util.Queue;
 public class SimpleBlockingQueue<T> {
     @GuardedBy("lock")
     private Queue<T> queue = new LinkedList<>();
-    private final int LIMIT;
+    private final int limit;
     private final Object lock = new Object();
 
-    public SimpleBlockingQueue(int LIMIT) {
-        this.LIMIT = LIMIT;
+    public SimpleBlockingQueue(int limit) {
+        this.limit = limit;
     }
 
     public void offer(T value) throws InterruptedException {
         synchronized (lock) {
-            while (queue.size() == LIMIT) {
+            while (queue.size() == limit) {
                     lock.wait();
             }
             queue.offer(value);
