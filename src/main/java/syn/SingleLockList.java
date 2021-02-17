@@ -3,7 +3,7 @@ package syn;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 
-public class SingleLockList <T> implements Iterable<T> {
+public class SingleLockList<T> implements Iterable<T> {
     private SimpleArray<T> array = new SimpleArray<>(10);
 
     public synchronized void add(T value) {
