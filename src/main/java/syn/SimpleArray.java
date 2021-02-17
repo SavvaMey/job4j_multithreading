@@ -5,24 +5,29 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+@SuppressWarnings("unchecked")
 public class SimpleArray<T> implements Iterable<T> {
     private T[] container;
     private int size = 0;
     private int pos = 0;
     private int modCount = 0;
 
+
     public SimpleArray(int size) {
         this.container = (T[]) new Object[size];
     }
+
 
     public SimpleArray() {
         this.container = (T[]) new Object[10];
     }
 
+
     public T get(int index) {
         Objects.checkIndex(index, pos);
         return container[index];
     }
+
 
     public void expand() {
         size *= 2;
@@ -40,8 +45,8 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public boolean checkUnique(T model) {
-        for (int i = 0; i < container.length; i++) {
-            if (Objects.equals(container[i], model)) {
+        for (T t : container) {
+            if (Objects.equals(t, model)) {
                 return true;
             }
         }
