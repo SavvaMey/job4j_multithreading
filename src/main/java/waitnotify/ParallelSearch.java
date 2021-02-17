@@ -10,7 +10,6 @@ public class ParallelSearch {
                         try {
                             System.out.println(queue.poll());
                         } catch (InterruptedException e) {
-                            System.out.println("завершаю работу");
                             Thread.currentThread().interrupt();
                         }
                     }
