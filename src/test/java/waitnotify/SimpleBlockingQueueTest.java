@@ -23,7 +23,11 @@ public class SimpleBlockingQueueTest {
                     int count = 0;
                     do {
                         count++;
-                        queue.offer(count);
+                        try {
+                            queue.offer(count);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     } while (count != 15);
                     System.out.println("завершил работу " + Thread.currentThread().getName());
                 }, "продюсер один"
@@ -31,7 +35,11 @@ public class SimpleBlockingQueueTest {
         Thread second = new Thread(
                 () -> {
                     for (int i = 0; i < 15; i++) {
-                        rsl.add(queue.poll());
+                        try {
+                            rsl.add(queue.poll());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                     System.out.println("завершил работу " + Thread.currentThread().getName());
                 }, "консюмер один"
@@ -50,7 +58,11 @@ public class SimpleBlockingQueueTest {
         Thread producer = new Thread(
                 () -> {
                     for (int i = 0; i < 5; i++) {
-                        queue.offer(i);
+                        try {
+                            queue.offer(i);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
         );
@@ -58,7 +70,11 @@ public class SimpleBlockingQueueTest {
         Thread consumer = new Thread(
                 () -> {
                     while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
-                        buffer.add(queue.poll());
+                        try {
+                            buffer.add(queue.poll());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
         );
