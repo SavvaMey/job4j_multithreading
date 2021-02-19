@@ -18,10 +18,10 @@ public class ParallelSearch {
         consumer.start();
         new Thread(
                 () -> {
-                    for (int index = 0; index != 3; index++) {
+                    for (int index = 0; index != 10; index++) {
                         try {
                             queue.offer(index);
-                            Thread.sleep(500);
+                           Thread.sleep(500);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
