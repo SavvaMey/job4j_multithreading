@@ -20,19 +20,35 @@ public class WgetFile implements Runnable {
              FileOutputStream fileOutputStream = new FileOutputStream("pom_tmp.xml")) {
             long before = System.currentTimeMillis();
             byte[] dataBuffer = new byte[1024];
-            int bytesRead;
-            bytesRead = in.read(dataBuffer, 0, 1024);
+            int bytesRead = 0;
+//            bytesRead = in.read(dataBuffer, 0, 1024);
+//
+//            long after = System.currentTimeMillis();
+//            long dist = speed * 1000L - (after - before);
+//            if (dist > 0) {
+//                Thread.sleep(dist);
+//            }
+//            if (bytesRead == -1) {
+//                return;
+//            }
+//            fileOutputStream.write(dataBuffer, 0, bytesRead);
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
-            long after = System.currentTimeMillis();
-            long dist = speed * 1000L - (after - before);
-            if (dist > 0) {
-                Thread.sleep(dist);
+            while (bytesRead != -1) {
+                long start = System.currentTimeMillis();
+                bytesRead = in.read(dataBuffer, 0, 1024);
+                long finish = System.currentTimeMillis();
+                long time = finish - start;
+//                if (speed - time > 0) {
+//                    Thread.sleep(speed - time);
+//                }
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
-            if (bytesRead == -1) {
-                return;
-            }
-            fileOutputStream.write(dataBuffer, 0, bytesRead);
-        } catch (IOException | InterruptedException e) {
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

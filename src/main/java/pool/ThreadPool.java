@@ -42,7 +42,7 @@ public class ThreadPool {
         for (int i = 0; i < 1000; i++) {
             int finalI = i;
             threadPool.work(new Thread(
-                    () -> System.out.println(finalI +"task")
+                    () -> System.out.println(finalI + "task")
             ));
         }
         threadPool.shutdown();

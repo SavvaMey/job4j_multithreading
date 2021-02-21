@@ -9,6 +9,7 @@ public class SearchIndex<T> extends RecursiveTask<Integer> {
     private final int from;
     private final int to;
     private final T object;
+    private final int process = Runtime.getRuntime().availableProcessors();
 
     public SearchIndex(T[] array, int from, int to, T object) {
         this.array = array;
@@ -19,7 +20,8 @@ public class SearchIndex<T> extends RecursiveTask<Integer> {
 
     @Override
     protected Integer compute() {
-        if (to - from <= 10) {
+//        int  threshhold = (from - to + 1) / process;
+        if (from - to + 1 <= 32) {
             return searchAnswer(array);
         }
         int mid = (from + to) / 2;
@@ -47,18 +49,18 @@ public class SearchIndex<T> extends RecursiveTask<Integer> {
     }
 
     public static void main(String[] args) {
-//        Integer[] array = {1, 6, 10, -5, 100, -100, 50, 1, 19, 20};
-        Integer[] array = new Integer[100000000];
+        System.out.println(Runtime.getRuntime().availableProcessors());
+        Integer[] array = new Integer[8000000];
 
         for (int i = 0; i < array.length; i++) {
-            array[i] = ThreadLocalRandom.current().nextInt(-1000000, 1000000 + 1);
+            array[i] = ThreadLocalRandom.current().nextInt(-10000000, 10000000 + 1);
         }
         long before = System.currentTimeMillis();
-        Integer object = array[71500000];
+        Integer object = array[7990000];
         int index = SearchIndex.initSearch(array, object);
         System.out.println(index);
         long after = System.currentTimeMillis();
-        System.out.println(after - before + "многопоточный индекс");
+        System.out.println(after - before + "многопоточное время");
 
         before = System.currentTimeMillis();
         for (int i = 0; i < array.length; i++) {
@@ -67,8 +69,8 @@ public class SearchIndex<T> extends RecursiveTask<Integer> {
                 break;
             }
         }
-        System.out.println(index + " однопоточный индекс");
+        System.out.println(index);
         after = System.currentTimeMillis();
-        System.out.println(after - before);
+        System.out.println(after - before + " однопоточное время");
     }
 }
