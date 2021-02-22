@@ -9,7 +9,7 @@ public class SearchIndex<T> extends RecursiveTask<Integer> {
     private final int from;
     private final int to;
     private final T object;
-    private final int process = Runtime.getRuntime().availableProcessors();
+    private static final int THRESHOLD = Runtime.getRuntime().availableProcessors();
 
     public SearchIndex(T[] array, int from, int to, T object) {
         this.array = array;
@@ -21,7 +21,7 @@ public class SearchIndex<T> extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
 //        int  threshhold = (from - to + 1) / process;
-        if (from - to + 1 <= 32) {
+        if (to - from <= array.length / THRESHOLD) {
             return searchAnswer(array);
         }
         int mid = (from + to) / 2;
@@ -50,13 +50,13 @@ public class SearchIndex<T> extends RecursiveTask<Integer> {
 
     public static void main(String[] args) {
         System.out.println(Runtime.getRuntime().availableProcessors());
-        Integer[] array = new Integer[8000000];
+        Integer[] array = new Integer[80000000];
 
         for (int i = 0; i < array.length; i++) {
             array[i] = ThreadLocalRandom.current().nextInt(-10000000, 10000000 + 1);
         }
         long before = System.currentTimeMillis();
-        Integer object = array[7990000];
+        Integer object = array[79900000];
         int index = SearchIndex.initSearch(array, object);
         System.out.println(index);
         long after = System.currentTimeMillis();
