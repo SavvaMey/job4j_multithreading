@@ -18,44 +18,29 @@ public class WgetFile implements Runnable {
     public void run() {
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream("pom_tmp.xml")) {
-            long before = System.currentTimeMillis();
             byte[] dataBuffer = new byte[1024];
             int bytesRead = 0;
-//            bytesRead = in.read(dataBuffer, 0, 1024);
-//
-//            long after = System.currentTimeMillis();
-//            long dist = speed * 1000L - (after - before);
-//            if (dist > 0) {
-//                Thread.sleep(dist);
-//            }
-//            if (bytesRead == -1) {
-//                return;
-//            }
-//            fileOutputStream.write(dataBuffer, 0, bytesRead);
-//        } catch (IOException | InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-            while (bytesRead != -1) {
-                long start = System.currentTimeMillis();
+            while (true) {
+                long before = System.currentTimeMillis();
                 bytesRead = in.read(dataBuffer, 0, 1024);
-                long finish = System.currentTimeMillis();
-                long time = finish - start;
-//                if (speed - time > 0) {
-//                    Thread.sleep(speed - time);
-//                }
+                if (bytesRead == -1) {
+                    break;
+                }
+                long after = System.currentTimeMillis();
+                long dist = speed * 1000L - (after - before);
+                if (dist > 0) {
+                    Thread.sleep(dist);
+                }
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e ) {
             e.printStackTrace();
         }
     }
 
     /**
      * @param args "https://raw.githubusercontent.com/peterarsentev/course_test/master/pom.xml"
-     *             10 sec
+     *             1 sec
      * @throws InterruptedException
      */
     public static void main(String[] args) throws InterruptedException {

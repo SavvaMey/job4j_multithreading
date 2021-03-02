@@ -1,5 +1,7 @@
 package thread;
 
+import java.io.File;
+
 public class Wget {
     public static void main(String[] args) throws InterruptedException {
         Thread thread = new Thread(
@@ -17,5 +19,6 @@ public class Wget {
         thread.start();
         thread.join();
         System.out.println("Loaded main");
+
     }
 }
